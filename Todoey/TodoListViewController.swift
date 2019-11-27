@@ -12,9 +12,13 @@ class TodoListViewController: UITableViewController {
     
     var itemArray = ["Find Mike", "Buy eggs", "Destory Demogorgon"]
     
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            itemArray = items
+        }
     }
     
     //MARK - TableView Datasource Methods
@@ -52,6 +56,7 @@ class TodoListViewController: UITableViewController {
             // what will happen once the user clicks the Add Item button on our UIAlert
             // 將textField內容加入到資料的陣列中
             self.itemArray.append(textField.text!)      // 由於表格也可以呈現空白，故直接用!
+            self.defaults.set(self.itemArray, forKey: "TodoListArray")
             // 重新讀取tableView否則會無法將新的資料顯示在table view上
             self.tableView.reloadData()
         }
